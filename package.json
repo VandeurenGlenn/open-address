@@ -8,6 +8,7 @@
     "start": "node ./dist/open-address.js",
     "watch": "tend",
     "test": "test",
+    "heroku-prebuild": "npm install --only=dev",
     "heroku-postbuild": "sh build.sh"
   },
   "repository": {

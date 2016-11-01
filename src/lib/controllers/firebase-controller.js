@@ -78,7 +78,7 @@ export default class FirebaseController extends BaseController {
   }
 
   writeOpenAddress(uid, address) {
-    firebase.database().ref(`openAdresses/${uid}`).set(address);
+    firebase.database().ref(`openAddresses/${uid}`).set(address);
   }
 
   writeUserAddress(uid, address) {

@@ -4,10 +4,11 @@
   "description": "a address for your pc, chromebook, macbook, etc ...",
   "main": "index.js",
   "scripts": {
-    "build": "sh build/build.sh",
+    "build": "sh build.sh",
     "start": "node ./dist/open-address.js",
     "watch": "tend",
-    "test": "test"
+    "test": "test",
+    "heroku-postbuild": "sh build.sh"
   },
   "repository": {
     "type": "git",

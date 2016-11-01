@@ -26,9 +26,6 @@ export default class OpenAddress extends FirebaseController {
     this.api.get('/create/:port', (req, res) => {
       let item = this._setupItem(req);
 
-      if (this.checkIfLocalhost(ip)) {
-        this.log('running on local network');
-      }
       this.writeOpenAddress(item.uid, item);
 
       res.send(JSON.stringify(item));
@@ -37,10 +34,6 @@ export default class OpenAddress extends FirebaseController {
     this.api.get('/@private/create/:port', (req, res) => {
       let item = this._setupItem(req);
 
-      if (this.checkIfLocalhost(ip)) {
-        item.ip = req.params.ip || '0.0.0.0';
-        this.log('running on local network');
-      }
       // authenticate
       if (!this.user && !req.auth) {
         this.authenticate().then(() => {
@@ -109,12 +102,5 @@ export default class OpenAddress extends FirebaseController {
 
   _computeUrl(uid) {
     return 'https://open-address.herokuapp.com/' + uid;
-  }
-
-  checkIfLocalhost(ip) {
-    if (ip === '0.0.0.0') {
-      this.log('localhost detected');
-      return true;
-    }
   }
 }

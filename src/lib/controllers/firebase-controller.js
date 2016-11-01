@@ -65,6 +65,18 @@ export default class FirebaseController extends BaseController {
     });
   }
 
+  getOpenAddress(uid) {
+    return new Promise((resolve, reject) => {
+      firebase.database().ref(`OpenAddresses/${uid}`).once('value', snapshot => {
+        let data = snapshot.val();
+        resolve(data);
+      }).catch(error => {
+        this.error(error);
+        reject(error);
+      });
+    });
+  }
+
   writeUserAddress(uid, address) {
     firebase.database().ref(`users/${uid}/${address.uid}`).set(address);
   }

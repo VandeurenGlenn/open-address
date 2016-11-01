@@ -16,9 +16,11 @@ export default class OpenAddress extends FirebaseController {
       res.send('welcome to open-address');
     });
 
-    this.api.get('/:uid', (req, res) => {
+    this.api.get('/address/:uid', (req, res) => {
       // TODO: handle connection request
-      res.send('welcome to open-address');
+      this.getOpenAddress(req.params.uid).then(response => {
+        res.send(JSON.stringify(response));
+      });
     });
 
     this.api.get('/create/:port', (req, res) => {
@@ -68,24 +70,24 @@ export default class OpenAddress extends FirebaseController {
           mesage = `Hmm, I don't seem to know you...`;
         }
         this.log('Not authorized');
-        return res.send(message);
+        res.send(message);
       } else if (req.auth !== undefined && this.user === null) {
         if (req.auth['password'] && req.auth['username']) {
           this.authenticate('password', req.auth).then(() => {
             this.getUserAddresses(this.user).then(addresses => {
-              return res.send(JSON.stringify(addresses));
+              res.send(JSON.stringify(addresses));
             });
           });
         } else if (req.auth === 'google') {
           this.authenticate('google').then(() => {
             this.getUserAddresses(this.user).then(addresses => {
-              return res.send(JSON.stringify(addresses));
+              res.send(JSON.stringify(addresses));
             });
           });
         }
       } else if (this.user !== null) {
         this.getUserAddresses(this.user).then(addresses => {
-          return res.send(JSON.stringify(addresses));
+          res.send(JSON.stringify(addresses));
         });
       }
     });
@@ -94,7 +96,7 @@ export default class OpenAddress extends FirebaseController {
   }
 
   checkIfLocalhost(ip) {
-    if (ip.length > 8 || ip === '0.0.0.0') {
+    if (ip === '0.0.0.0') {
       this.log('localhost detected');
       return true;
     }

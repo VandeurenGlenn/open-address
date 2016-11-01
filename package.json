@@ -1,6 +1,6 @@
 {
   "name": "open-address",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "a address for your pc, chromebook, macbook, etc ...",
   "main": "dist/open-address.js",
   "scripts": {

@@ -90,7 +90,7 @@ export default class OpenAddress extends FirebaseController {
       }
     });
 
-    this.server.listen(80);
+    this.server.listen(8080);
   }
 
   checkIfLocalhost(ip) {

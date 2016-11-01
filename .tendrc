@@ -1,0 +1,7 @@
+ignoreHidden=true
+
+[js]
+directory=./src/
+command=sh build.sh
+restart=true
+start=true

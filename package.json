@@ -2,7 +2,7 @@
   "name": "open-address",
   "version": "0.0.1",
   "description": "a address for your pc, chromebook, macbook, etc ...",
-  "main": "index.js",
+  "main": "dist/open-address.js",
   "scripts": {
     "build": "sh build.sh",
     "start": "node ./dist/open-address.js",

@@ -67,7 +67,7 @@ export default class FirebaseController extends BaseController {
 
   getOpenAddress(uid) {
     return new Promise((resolve, reject) => {
-      firebase.database().ref(`OpenAddresses/${uid}`).once('value', snapshot => {
+      firebase.database().ref(`openAddresses/${uid}`).once('value', snapshot => {
         let data = snapshot.val();
         resolve(data);
       }).catch(error => {

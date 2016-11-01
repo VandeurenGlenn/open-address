@@ -24,16 +24,18 @@ export default class OpenAddress extends FirebaseController {
     });
 
     this.api.get('/create/:port', (req, res) => {
-      let ip = req.ip;
-      let port = req.params.port;
-      let uid = Math.random().toString(36).slice(-8);
-      let url = this._computeUrl(uid);
-      let item = {
-        uid: uid,
-        ip: ip,
-        port: port,
-        url: url
+      let item = this._setupItem(req);
+
+      if (this.checkIfLocalhost(ip)) {
+        this.log('running on local network');
       }
+      this.writeOpenAddress(item.uid, item);
+
+      res.send(JSON.stringify(item));
+    });
+
+    this.api.get('/@private/create/:port', (req, res) => {
+      let item = this._setupItem(req);
 
       if (this.checkIfLocalhost(ip)) {
         item.ip = req.params.ip || '0.0.0.0';
@@ -47,18 +49,10 @@ export default class OpenAddress extends FirebaseController {
       } else {
         this.writeUserAddress(this.user.uid, item);
       }
-        // if (req.auth || this.user) {
-        //   this.log('user authenticated');
-        //   this.writeUserAddress('user1', item);
-        // } else {
-        //   this.writeTemporaryAddress(item);
-        // }
-      // this.authenticate();
       res.send(JSON.stringify(item));
-
     });
 
-    this.api.get('/addresses', (req, res) => {
+    this.api.get('/@private/addresses', (req, res) => {
       if (this.user === null && req.auth === undefined) {
         var message = '';
         let num = Math.random() * (15 - 1) + 1;
@@ -95,14 +89,32 @@ export default class OpenAddress extends FirebaseController {
     this.server.listen(process.env.PORT || 8080);
   }
 
+  _setupItem(req) {
+    let ip = req.ip;
+    let port = req.params.port;
+    let uid = this._createUid();
+    let url = this._computeUrl(uid);
+
+    return {
+      uid: uid,
+      ip: ip,
+      port: port,
+      url: url
+    };
+  }
+
+  _createUid() {
+    return Math.random().toString(36).slice(-8);
+  }
+
+  _computeUrl(uid) {
+    return 'https://open-address.herokuapp.com/' + uid;
+  }
+
   checkIfLocalhost(ip) {
     if (ip === '0.0.0.0') {
       this.log('localhost detected');
       return true;
     }
-  }
-
-  _computeUrl(uid) {
-    return 'https://open-address.herokuapp.com/' + uid;
   }
 }

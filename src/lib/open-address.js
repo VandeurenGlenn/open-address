@@ -87,12 +87,14 @@ export default class OpenAddress extends FirebaseController {
     let port = req.params.port;
     let uid = this._createUid();
     let url = this._computeUrl(uid);
+    let remoteIp = req.connection.remoteAddress;
 
     return {
       uid: uid,
       ip: ip,
       port: port,
-      url: url
+      url: url,
+      remoteIp: remoteIp
     };
   }
 
